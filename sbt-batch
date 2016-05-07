@@ -1,0 +1,4 @@
+#!/bin/sh
+SBT_OPTS="-Xmx1024M -Dfile.encoding=UTF-8 -XX:+CMSClassUnloadingEnabled -Dsbt.log.noformat=true"
+
+exec java $SBT_OPTS -jar sbt-launch.jar "$@" < /dev/null
