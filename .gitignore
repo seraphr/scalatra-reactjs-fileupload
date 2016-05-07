@@ -1,0 +1,45 @@
+*.class
+*.log
+
+# sbt specific
+.history
+dist/*
+target/
+bin/
+lib_managed/
+src_managed/
+project/boot/
+project/plugins/project/
+
+# Scala-IDE specific
+.scala_dependencies
+.classpath
+.project
+.eclipseTarget
+
+# project output
+.cache
+
+# CDT specific
+*/native/Release
+*/native/Debug
+
+# Eclilpse specific
+.settings
+.metadata
+
+# NativeLoader
+tmplib/
+
+# IntelliJ IDEA specific
+.idea/
+.idea_modules/
+
+# to attach source and docs to IDEA
+updateOptions.sbt
+
+#testOutput
+testOutput/
+testout/
+out/
+data/output/
