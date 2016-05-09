@@ -20,6 +20,7 @@ lazy val root = (project in file("."))
     commonJVM,
     commonJS,
     view,
+    client_main,
     webapi,
     server_main
   )
@@ -32,12 +33,24 @@ lazy val common = crossProject
   .crossType(CrossType.Pure)
   .in(file("common"))
   .withCrossCommonSettings
+  .jsSettings(
+    libraryDependencies ++= Seq(
+      Dependencies.scalajs.reactjs.value,
+      Dependencies.scalajs.scalajsDom.value,
+      Dependencies.scalajs.upickle.value
+    ),
+    jsDependencies ++= Seq(
+      Dependencies.js.reactjs,
+      Dependencies.js.reactDom,
+      Dependencies.js.flux
+    )
+  )
+
 lazy val commonJVM = common.jvm
 lazy val commonJS = common.js
 
 
 /// ----- client プロジェクト -----
-/* js用httpclient実装置き場  http_client_apiが CrossType.Fullになる場合消える*/
 
 /* js用のview置き場 */
 lazy val view = (project in file("client-view"))
@@ -45,6 +58,16 @@ lazy val view = (project in file("client-view"))
   .dependsOn(
     commonJS)
 
+lazy val client_main = (project in file("client-main"))
+  .withJsCommonSettings
+  .settings(
+    Seq(fastOptJS, fullOptJS, packageMinifiedJSDependencies, packageJSDependencies) map { packageJSKey =>
+      crossTarget in (Compile, packageJSKey) := (baseDirectory in server_main).value / "src/main/webapp/assets/js"
+    }
+  )
+  .dependsOn(
+    view
+  )
 
 /// ----- server プロジェクト -----
 /* webapi実装置き場 */
@@ -52,11 +75,12 @@ lazy val webapi = (project in file("webapi"))
   .withJvmCommonSettings
   .settings(
     libraryDependencies ++= Seq(
-      Dependencies.scalatra,
-      Dependencies.scalatraSwagger,
-      Dependencies.upickle,
-      Dependencies.servletApi % "provided",
-      Dependencies.scalatraTest % "test"
+      Dependencies.jvm.scalatra,
+      Dependencies.jvm.scalatraSwagger,
+      Dependencies.jvm.upickle,
+      Dependencies.jvm.commonsIO,
+      Dependencies.jvm.servletApi % "provided",
+      Dependencies.jvm.scalatraTest % "test"
     )
   )
   .dependsOn(
@@ -69,6 +93,16 @@ lazy val server_main = (project in file("server-main"))
   .dependsOn(
     webapi,
     commonJVM
+  ).settings(
+    libraryDependencies ++= Seq(
+      Dependencies.jvm.jetty,
+      Dependencies.jvm.jettyWebapp,
+      Dependencies.jvm.servletApi
+    )
+  )
+  .settings(packAutoSettings)
+  .settings(
+    packResourceDir += (baseDirectory.value / "src/main/webapp" -> "webapp")
   )
 
 // command alias

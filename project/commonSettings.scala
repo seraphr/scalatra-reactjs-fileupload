@@ -20,8 +20,8 @@ object CommonSettings {
 
   val CommonDependencies = Def.settings(
     libraryDependencies ++= Seq(
-      Dependencies.js.scalatest.value % "test",
-      Dependencies.js.scalacheck.value % "test"
+      Dependencies.scalajs.scalatest.value % "test",
+      Dependencies.scalajs.scalacheck.value % "test"
     )
   )
 
