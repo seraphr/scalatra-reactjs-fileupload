@@ -42,7 +42,7 @@ class FileUploadComponentModule(aActions: FileUploadActions, aStore: FileUploadS
       .noBackend
       .render_P { tDefaultProp =>
         <.form(
-          <.input(^.`type` := "file", ^.size := "100px", ^.name := tDefaultProp.fileParam),
+          <.input(^.`type` := "file", ^.name := tDefaultProp.fileParam),
           <.input(^.`type` := "button", ^.value := "send", ^.onClick ==> onSubmit)
         )
       }.build
