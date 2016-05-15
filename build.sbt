@@ -62,7 +62,7 @@ lazy val client_main = (project in file("client-main"))
   .withJsCommonSettings
   .settings(
     Seq(fastOptJS, fullOptJS, packageMinifiedJSDependencies, packageJSDependencies) map { packageJSKey =>
-      crossTarget in (Compile, packageJSKey) := (baseDirectory in server_main).value / "src/main/webapp/assets/js"
+      crossTarget in (Compile, packageJSKey) := (crossTarget in (Compile, packageJSKey)).value / "js"
     }
   )
   .dependsOn(
@@ -102,7 +102,9 @@ lazy val server_main = (project in file("server-main"))
   )
   .settings(packAutoSettings)
   .settings(
-    packResourceDir += (baseDirectory.value / "src/main/webapp" -> "webapp")
+    packResourceDir += (baseDirectory.value / "src/main/webapp" -> "webapp"),
+    packResourceDir += ((crossTarget in client_main).value / "js" -> "webapp/assets/js"),
+    pack <<= pack.dependsOn(fastOptJS in(client_main, Compile))
   )
 
 // command alias
