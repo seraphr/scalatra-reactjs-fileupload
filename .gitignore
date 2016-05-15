@@ -1,6 +1,14 @@
 *.class
 *.log
 
+# scala-js output
+*-fastopt.js
+*-fastopt.js.map
+*-opt.js
+*-opt.js.map
+*-jsdeps.js
+*-jsdeps.min.js
+
 # sbt specific
 .history
 dist/*
