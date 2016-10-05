@@ -34,7 +34,7 @@ class DefaultFileUploadStore(aDispatcher: Dispatcher[FileUploadEvent]) extends F
 
   class DefaultSubscription(val f: FileUploadState => Unit) extends Subscription {
     override def unsubscribe(): Unit = {
-      mSubscribers.filter(_ != f)
+      mSubscribers = mSubscribers.filter(_ != f)
     }
   }
 }
